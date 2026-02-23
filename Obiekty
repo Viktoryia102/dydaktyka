@@ -1,0 +1,251 @@
+// ===== ZADANIE 1: Utwórz obiekt książka =====
+const ksiazka = {
+    tytul: 'Wiedźmin',
+    autor: 'Andrzej Sapkowski',
+    rokWydania: 1993,
+    
+    // Zadanie 3: metoda opis()
+    opis() {
+        return `Tytuł: ${this.tytul} Autor: ${this.autor}`;
+    }
+};
+
+// Zadanie 2: Wypisz właściwości w konsoli
+console.log('=== ZADANIE 2: Właściwości książki ===');
+for (let prop in ksiazka) {
+    if (typeof ksiazka[prop] !== 'function') {
+        console.log(`${prop}: ${ksiazka[prop]}`);
+    }
+}
+
+// Zadanie 3: Wywołanie metody opis()
+console.log('=== ZADANIE 3: Metoda opis() ===');
+console.log(ksiazka.opis());
+
+// Zadanie 4: Zmiana właściwości
+console.log('=== ZADANIE 4: Zmiana właściwości ===');
+console.log('Przed zmianą:', ksiazka.rokWydania);
+ksiazka.rokWydania = 1994;
+console.log('Po zmianie:', ksiazka.rokWydania);
+console.log('Czy zmiana działa?', ksiazka.rokWydania === 1994);
+
+// Zadanie 6 (poziom 1): Tablica 3 obiektów produkt
+console.log('=== ZADANIE 6: Tablica produktów ===');
+const produkty = [
+    { nazwa: 'Chleb', cena: 3.50 },
+    { nazwa: 'Mleko', cena: 2.80 },
+    { nazwa: 'Masło', cena: 5.20 }
+];
+
+console.log('Nazwy produktów:');
+produkty.forEach(p => console.log(p.nazwa));
+
+// ===== POZIOM 2 - FUNKCJA KONSTRUKTOR I CLASS =====
+
+// Zadanie 6 (poziom 2): Funkcja konstruktor Uczen
+function Uczen(imie, nazwisko, klasa) {
+    this.imie = imie;
+    this.nazwisko = nazwisko;
+    this.klasa = klasa;
+    
+    // Zadanie 7: metoda przedstawSie()
+    this.przedstawSie = function() {
+        return `Nazywam się ${this.imie} ${this.nazwisko} i chodzę do klasy ${this.klasa}`;
+    };
+}
+
+// Zadanie 8: Utwórz 3 różnych uczniów
+console.log('=== ZADANIE 8: Uczniowie z konstruktora ===');
+const uczen1 = new Uczen('Jan', 'Kowalski', '3A');
+const uczen2 = new Uczen('Anna', 'Nowak', '2B');
+const uczen3 = new Uczen('Piotr', 'Wiśniewski', '1C');
+
+console.log(uczen1.przedstawSie());
+console.log(uczen2.przedstawSie());
+console.log(uczen3.przedstawSie());
+
+// Zadanie 9: Przepisz używając składni class
+class UczenClass {
+    constructor(imie, nazwisko, klasa) {
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.klasa = klasa;
+    }
+    
+    // Zadanie 7: metoda przedstawSie()
+    przedstawSie() {
+        return `Nazywam się ${this.imie} ${this.nazwisko} i chodzę do klasy ${this.klasa}`;
+    }
+    
+    // Zadanie 10: metoda zwracająca inicjały
+    inicjaly() {
+        return `${this.imie[0]}.${this.nazwisko[0]}.`;
+    }
+}
+
+console.log('=== ZADANIE 9-10: Uczniowie z class ===');
+const uczenClass1 = new UczenClass('Jan', 'Kowalski', '3A');
+const uczenClass2 = new UczenClass('Anna', 'Nowak', '2B');
+const uczenClass3 = new UczenClass('Piotr', 'Wiśniewski', '1C');
+
+console.log(uczenClass1.przedstawSie());
+console.log(uczenClass2.przedstawSie());
+console.log(uczenClass3.przedstawSie());
+console.log('Inicjały ucznia 1:', uczenClass1.inicjaly());
+console.log('Inicjały ucznia 2:', uczenClass2.inicjaly());
+console.log('Inicjały ucznia 3:', uczenClass3.inicjaly());
+
+// ===== POZIOM 3 - KLASA PRODUKT =====
+
+// Zadanie 11: Klasa Produkt
+class Produkt {
+    constructor(nazwa, cena) {
+        this.nazwa = nazwa;
+        this.cena = cena;
+    }
+    
+    // Zadanie 12: metoda render() - wersja konsolowa
+    render() {
+        console.log(`Produkt: ${this.nazwa}, Cena: ${this.cena} zł`);
+        return `<div>${this.nazwa} - ${this.cena} zł</div>`;
+    }
+    
+    // Metoda do aktualizacji ceny
+    promocja(procent) {
+        this.cena = this.cena * (1 - procent/100);
+    }
+}
+
+// Zadanie 13: Tablica 4 produktów
+const produkty2 = [
+    new Produkt('Jabłka', 2.50),
+    new Produkt('Gruszki', 3.20),
+    new Produkt('Banany', 4.10),
+    new Produkt('Pomarańcze', 5.30)
+];
+
+console.log('=== ZADANIE 13: Lista produktów ===');
+produkty2.forEach(p => p.render());
+
+// Zadanie 14-15: Symulacja w konsoli
+console.log('=== ZADANIE 14-15: Operacje na produktach ===');
+console.log('Usuwam produkt "Jabłka" (symulacja)');
+const produktyPoUsunieciu = produkty2.filter(p => p.nazwa !== 'Jabłka');
+console.log('Pozostałe produkty:', produktyPoUsunieciu.map(p => p.nazwa));
+
+console.log('Promocja -20% na "Banany"');
+const produktPromocja = produkty2.find(p => p.nazwa === 'Banany');
+if (produktPromocja) {
+    console.log('Cena przed promocją:', produktPromocja.cena);
+    produktPromocja.promocja(20);
+    console.log('Cena po promocji:', produktPromocja.cena);
+}
+
+// ===== POZIOM 4 - DZIEDZICZENIE I ENKAPSULACJA =====
+
+// Zadanie 16: Klasa Osoba
+class Osoba {
+    constructor(imie, wiek) {
+        this.imie = imie;
+        this._wiek = wiek; // prywatne z getterem/setterem
+    }
+    
+    // Zadanie 16: metoda przywitaj()
+    przywitaj() {
+        return `Cześć, mam na imię ${this.imie}`;
+    }
+    
+    // Zadanie 19: Getter i setter dla wieku
+    get wiek() {
+        return this._wiek;
+    }
+    
+    set wiek(value) {
+        if (value < 0) {
+            console.error('Błąd: Wiek nie może być mniejszy niż 0!');
+        } else {
+            this._wiek = value;
+        }
+    }
+}
+
+// Zadanie 17: Klasa Nauczyciel dziedzicząca po Osoba
+class Nauczyciel extends Osoba {
+    constructor(imie, wiek, przedmiot) {
+        super(imie, wiek);
+        this.przedmiot = przedmiot;
+        this.#pensja = 0; // Zadanie 20: prywatne pole
+    }
+    
+    // Zadanie 18: Nadpisanie metody przywitaj()
+    przywitaj() {
+        return `Dzień dobry, jestem nauczycielem ${this.imie}, uczę ${this.przedmiot}`;
+    }
+    
+    // Zadanie 20: Prywatne pole #pensja
+    #pensja;
+    
+    ustawPensje(kwota) {
+        this.#pensja = kwota;
+    }
+    
+    pokazPensje() {
+        return this.#pensja;
+    }
+}
+
+console.log('=== ZADANIE 16-20: Dziedziczenie i enkapsulacja ===');
+const osoba = new Osoba('Marek', 30);
+console.log(osoba.przywitaj());
+
+const nauczyciel = new Nauczyciel('Anna', 35, 'matematyki');
+console.log(nauczyciel.przywitaj());
+
+// Test gettera i settera
+console.log('Wiek nauczyciela:', nauczyciel.wiek);
+nauczyciel.wiek = -5; // Powinien wyświetlić błąd
+nauczyciel.wiek = 40;
+console.log('Nowy wiek nauczyciela:', nauczyciel.wiek);
+
+// Test prywatnego pola
+nauczyciel.ustawPensje(5000);
+console.log('Pensja nauczyciela:', nauczyciel.pokazPensje());
+
+// ===== POZIOM 5 - MINI PROJEKT SYSTEM SZKOLNY =====
+
+// Zadanie 21: Klasa Uczen
+class UczenSzkolny {
+    constructor(imie, klasa) {
+        this.imie = imie;
+        this.klasa = klasa;
+        this.oceny = [];
+    }
+    
+    // Metoda licząca średnią
+    srednia() {
+        if (this.oceny.length === 0) return 0;
+        const suma = this.oceny.reduce((acc, ocena) => acc + ocena, 0);
+        return suma / this.oceny.length;
+    }
+    
+    // Dodawanie oceny
+    dodajOcene(ocena) {
+        this.oceny.push(ocena);
+    }
+}
+
+// Zadanie 22: Klasa KlasaSzkolna
+class KlasaSzkolna {
+    constructor(nazwa) {
+        this.nazwa = nazwa;
+        this.uczniowie = [];
+    }
+    
+    // Metoda dodająca ucznia
+    dodajUcznia(uczen) {
+        this.uczniowie.push(uczen);
+    }
+    
+    // Metoda usuwająca ucznia
+    usunUcznia(imie) {
+        this.uczniowie = this.uczniowie.filter(u => u.imie !== im
