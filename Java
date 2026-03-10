@@ -1,22 +1,28 @@
-package c/linic.core;
 
-public class Pacjent {
-    private String name;
-    private String pesel;
-    private String kodChoroby;
+package clinic.client;
 
-    public Pacjent(String name, String pesel) {
-        this.name = name;
-        this.pesel = pesel;
-        this.kodChoroby = "";
-    }
+import clinic.core.Pacjent;
+import clinic.core.Doktor;
 
-    public String getName() {
-        return name;
-    }
+public class ReceptionApp {
+    public static void main(String[] args) {
+        // Tworzenie obiektów
+        Pacjent pacjent = new Pacjent("Anna Nowak", "98765432109");
+        Doktor doktor = new Doktor();
 
-    void setKodChoroby(String kod) {
-        this.kodChoroby = kod;
+        // Wypisanie imienia pacjenta
+        System.out.println("Imię pacjenta: " + pacjent.getName());
+
+        // Próba bezpośredniego dostępu do pola pesel - błąd kompilacji
+        // System.out.println(pacjent.pesel); // Błąd: pole pesel jest prywatne w klasie Pacjent
+
+        // Próba bezpośredniego wywołania metody setKodChoroby - błąd kompilacji
+        // pacjent.setKodChoroby("B12"); // Błąd: metoda setKodChoroby ma zasięg pakietowy, nie jest publiczna
+
+        // Poprawne wywołanie diagnozy przez lekarza
+        doktor.diagnoza(pacjent, "C45");
+
+        // Potwierdzenie (opcjonalnie - jeśli dodamy metodę do odczytu kodu choroby w celach testowych)
+        // System.out.println("Kod choroby pacjenta: " + pacjent.getKodChoroby()); // wymagałoby dodania metody w Pacjent
     }
 }
-
