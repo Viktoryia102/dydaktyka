@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadania: Data i Czas w JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            transition: background-color 0.5s;
+        }
+        .jasny {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .ciemny {
+            background-color: #333;
+            color: #f0f0f0;
+        }
+        #zegar {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        .wynik {
+            background: #e0e0e0;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="jasny">
+    <h1>Zadania: Data i Czas w JavaScript</h1>
+
+    <div id="wyniki"></div>
+    <div id="zegar">--:--:--</div>
+
+    <form id="formularz">
+        <label>Wybierz datę: <input type="date" id="dataWydarzenia"></label>
+        <button type="submit">Sprawdź dni do daty</button>
+    </form>
+    <div id="wynikDni"></div>
+
+    <script>
+        function pokazWynik(tekst) {
+            const div = document.createElement('div');
+            div.className = 'wynik';
+            div.textContent = tekst;
+            document.getElementById('wyniki').appendChild(div);
+        }
+
+        // POZIOM 1 - PODSTAWY
+        const teraz = new Date();
+        
+        console.log('Rok:', teraz.getFullYear());
+        console.log('Miesiąc:', teraz.getMonth());
+        console.log('Dzień:', teraz.getDate());
+        pokazWynik(`Aktualna data: ${teraz.toLocaleDateString('pl-PL')}`);
+        
+        const urodziny = new Date(2000, 0, 15);
+        pokazWynik(`Moje urodziny: ${urodziny.toLocaleDateString('pl-PL')}`);
+        
+        const godzina = teraz.getHours().toString().padStart(2, '0');
+        const minuty = teraz.getMinutes().toString().padStart(2, '0');
+        pokazWynik(`Jest godzina: ${godzina}:${minuty}`);
+        
+        const dniTygodnia = ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'];
+        pokazWynik(`Urodziłem/am się w: ${dniTygodnia[urodziny.getDay()]}`);
+
+        // POZIOM 2 - MANIPULACJA I FORMATOWANIE
+        function dodaj7Dni(data) {
+            const nowaData = new Date(data);
+            nowaData.setDate(nowaData.getDate() + 7);
+            return nowaData;
+        }
+        pokazWynik(`Za 7 dni: ${dodaj7Dni(teraz).toLocaleDateString('pl-PL')}`);
+        
+        pokazWynik(`Data w formacie polskim: ${teraz.toLocaleDateString('pl-PL')}`);
+        
+        const poczatekDnia = new Date(teraz);
+        poczatekDnia.setHours(0, 0, 0, 0);
+        const minutyOdPoczatku = Math.floor((teraz - poczatekDnia) / (1000 * 60));
+        pokazWynik(`Minuty od północy: ${minutyOdPoczatku}`);
+        
+        pokazWynik(`Dzisiaj jest: ${dniTygodnia[teraz.getDay()]}`);
+
+        // POZIOM 3 - DATA + DOM
+        function aktualizujZegar() {
+            const teraz = new Date();
+            const godz = teraz.getHours().toString().padStart(2, '0');
+            const min = teraz.getMinutes().toString().padStart(2, '0');
+            const sek = teraz.getSeconds().toString().padStart(2, '0');
+            document.getElementById('zegar').textContent = `${godz}:${min}:${sek}`;
+        }
+        setInterval(aktualizujZegar, 1000);
+        aktualizujZegar();
+        
+        function zmienKolorTla() {
+            const teraz = new Date();
+            const godzina = teraz.getHours();
+            const body = document.body;
+            if (godzina >= 20 || godzina < 6) {
+                body.className = 'ciemny';
+            } else {
+                body.className = 'jasny';
+            }
+        }
+        zmienKolorTla();
+        setInterval(zmienKolorTla, 60000);
+        
+        document.getElementById('formularz').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const wybranaData = new Date(document.getElementById('dataWydarzenia').value);
+            const dzis = new Date();
+            dzis.setHours(0, 0, 0, 0);
+            const roznicaMs = wybranaData - dzis;
+            const roznicaDni = Math.ceil(roznicaMs / (1000 * 60 * 60 * 24));
+            
+            let komunikat;
+            if (roznicaDni > 0) {
+                komunikat = `Do wybranej daty zostało ${roznicaDni} dni.`;
+            } else if (roznicaDni < 0) {
+                komunikat = `Wybrana data minęła ${-roznicaDni} dni temu.`;
+            } else {
+                komunikat = `Wybrana data jest dzisiaj!`;
+            }
+            document.getElementById('wynikDni').textContent = komunikat;
+        });
+
+        // POZIOM 4 - KLASY I LOGIKA
+        class LicznikCzasu {
+            constructor(dataWydarzenia) {
+                this.dataWydarzenia = new Date(dataWydarzenia);
+            }
+            
+            ileZostało() {
+                const teraz = new Date();
+                const roznica = this.dataWydarzenia - teraz;
+                
+                if (roznica <= 0) {
+                    return { dni: 0, godziny: 0, minuty: 0 };
+                }
+                
+                const dni = Math.floor(roznica / (1000 * 60 * 60 * 24));
+                const godziny = Math.floor((roznica % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minuty = Math.floor((roznica % (1000 * 60 * 60)) / (1000 * 60));
+                
+                return { dni, godziny, minuty };
+            }
+            
+            czyPrzeszlosc() {
+                return new Date() > this.dataWydarzenia;
+            }
+        }
+
+        const wydarzenie = new LicznikCzasu('2026-12-31');
+        const pozostalo = wydarzenie.ileZostało();
+        pokazWynik(`Do wydarzenia zostało: ${pozostalo.dni} dni, ${pozostalo.godziny} godzin, ${pozostalo.minuty} minut.`);
+        pokazWynik(`Czy wydarzenie minęło? ${wydarzenie.czyPrzeszlosc() ? 'Tak' : 'Nie'}`);
+    </script>
+</body>
+  </html> 
