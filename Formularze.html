@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Formularze JS</title>
+<style>
+  .error { border: 2px solid red; }
+  .msg { color: red; }
+</style>
+</head>
+<body>
+
+<form id="form">
+
+  <!-- Poziom 1 -->
+  <input type="text" id="text" placeholder="Wpisz coś">
+  <button>Wyślij</button>
+  <br><br>
+
+  <input type="checkbox" id="check"> Zgoda
+  <br><br>
+
+  <!-- Poziom 2 -->
+  <div id="count">0 znaków</div>
+  <input type="password" id="pass" placeholder="Hasło">
+  <br><br>
+
+  <select id="color">
+    <option value="">Wybierz kolor</option>
+    <option value="red">Czerwony</option>
+    <option value="blue">Niebieski</option>
+    <option value="green">Zielony</option>
+  </select>
+
+  <br><br>
+
+  <!-- Poziom 3 -->
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="pass1" placeholder="Hasło">
+  <input type="password" id="pass2" placeholder="Powtórz hasło">
+
+  <div id="msg" class="msg"></div>
+
+</form>
+
+<script>
+class UserForm {
+  constructor(id) {
+    this.form = document.getElementById(id);
+
+    this.form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const data = this.getData();
+      console.log(data);
+
+      // checkbox
+      console.log("Checkbox:", document.getElementById("check").checked);
+
+      // walidacja
+      if (!data.email.includes("@")) {
+        msg.innerText = "Niepoprawny email";
+        return;
+      }
+
+      if (data.pass1 !== data.pass2) {
+        msg.innerText = "Hasła nie są zgodne";
+        return;
+      }
+
+      msg.innerText = "";
+      this.clear();
+    });
+
+    // input - licznik znaków
+    text.addEventListener("input", () => {
+      count.innerText = text.value.length + " znaków";
+    });
+
+    // blur - hasło
+    pass.addEventListener("blur", () => {
+      pass.classList.toggle("error", pass.value.length < 8);
+    });
+
+    // select - kolor
+    color.addEventListener("change", () => {
+      document.body.style.background = color.value;
+    });
+  }
+
+  getData() {
+    return {
+      text: text.value,
+      email: email.value,
+      pass1: pass1.value,
+      pass2: pass2.value
+    };
+  }
+
+  clear() {
+    this.form.reset();
+    count.innerText = "0 znaków";
+  }
+}
+
+new UserForm("form");
+</script>
+
+</body>
+</html>
