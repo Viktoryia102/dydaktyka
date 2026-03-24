@@ -1,0 +1,69 @@
+// Klasa Modelu: Kwiatek (Цветок)
+public class Kwiatek {
+    // 4 pola z modyfikatorem private
+    private String gatunek;          // Название вида (например, "Róża")
+    private int czestotliwoscPodlewania; // Частота полива (в днях)
+    private double wysokosc;         // Высота растения (в см)
+    private boolean czyKwitnie;      // Цветет ли сейчас
+
+    // Konstruktor domyślny
+    public Kwiatek() {
+        this.gatunek = "Nieznany";
+        this.czestotliwoscPodlewania = 7;
+        this.wysokosc = 10.0;
+        this.czyKwitnie = false;
+    }
+
+    // Konstruktor parametryczny z użyciem this
+    public Kwiatek(String gatunek, int czestotliwoscPodlewania, double wysokosc, boolean czyKwitnie) {
+        this.gatunek = gatunek;
+        this.czestotliwoscPodlewania = czestotliwoscPodlewania;
+        this.wysokosc = wysokosc;
+        this.czyKwitnie = czyKwitnie;
+    }
+
+    // Gettery i settery dla wszystkich pól
+    public String getGatunek() {
+        return gatunek;
+    }
+
+    public void setGatunek(String gatunek) {
+        this.gatunek = gatunek;
+    }
+
+    public int getCzestotliwoscPodlewania() {
+        return czestotliwoscPodlewania;
+    }
+
+    // WALIDACJA: częstotliwość podlewania nie może być mniejsza niż 1 dzień
+    public void setCzestotliwoscPodlewania(int czestotliwoscPodlewania) {
+        if (czestotliwoscPodlewania < 1) {
+            System.out.println("Błąd: Częstotliwość podlewania musi wynosić co najmniej 1 dzień. Ustawiono wartość domyślną (7).");
+            this.czestotliwoscPodlewania = 7;
+        } else {
+            this.czestotliwoscPodlewania = czestotliwoscPodlewania;
+        }
+    }
+
+    public double getWysokosc() {
+        return wysokosc;
+    }
+
+    public void setWysokosc(double wysokosc) {
+        this.wysokosc = wysokosc;
+    }
+
+    public boolean isCzyKwitnie() {
+        return czyKwitnie;
+    }
+
+    public void setCzyKwitnie(boolean czyKwitnie) {
+        this.czyKwitnie = czyKwitnie;
+    }
+
+    // Metoda biznesowa: oblicza, czy roślina wymaga częstej pielęgnacji
+    public boolean czyWymagaCzestejPielegnacji() {
+        // Zwraca true, jeśli roślina jest niska (poniżej 15 cm) i wymaga podlewania częściej niż co 5 dni
+        return (this.wysokosc < 15.0 && this.czestotliwoscPodlewania < 5);
+    }
+}
