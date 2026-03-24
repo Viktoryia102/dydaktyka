@@ -1,0 +1,28 @@
+// Klasa Testowa (Main)
+public class Main {
+    public static void main(String[] args) {
+        // 1. Tworzymy obiekt menadżera (Szklarnia)
+        Szklarnia mojaSzklarnia = new Szklarnia();
+
+        // 2. Wywołanie metod wyświetlających i analitycznych
+        mojaSzklarnia.wyswietlWszystko();
+        mojaSzklarnia.znajdzKwiatyWymagajaceCzestejPielegnacji();
+
+        // 3. TEST WALIDACJI: Tworzymy nowy obiekt i próbujemy ustawić błędną wartość
+        System.out.println("\n=== TEST WALIDACJI ===");
+        Kwiatek testowyKwiatek = new Kwiatek("Testowa Róża", 10, 20.0, true);
+        System.out.println("Przed walidacją: Częstotliwość podlewania = " + testowyKwiatek.getCzestotliwoscPodlewania());
+
+        // Próba ustawienia nieprawidłowej wartości (0 dni)
+        System.out.println("Próba ustawienia częstotliwości podlewania na 0 dni:");
+        testowyKwiatek.setCzestotliwoscPodlewania(0);
+
+        // Sprawdzamy, czy wartość została zmieniona na domyślną
+        System.out.println("Po walidacji: Częstotliwość podlewania = " + testowyKwiatek.getCzestotliwoscPodlewania());
+
+        // Dodatkowa próba z poprawną wartością, aby pokazać, że działa
+        System.out.println("\nPróba ustawienia poprawnej wartości (4 dni):");
+        testowyKwiatek.setCzestotliwoscPodlewania(4);
+        System.out.println("Po zmianie: Częstotliwość podlewania = " + testowyKwiatek.getCzestotliwoscPodlewania());
+    }
+}
