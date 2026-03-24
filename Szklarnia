@@ -1,0 +1,46 @@
+// Klasa Menadżera: Szklarnia (Теплица)
+public class Szklarnia {
+    // 5-elementowa tablica przechowująca obiekty Kwiatek
+    private Kwiatek[] kwiatki;
+
+    // Konstruktor tworzący konkretne obiekty
+    public Szklarnia() {
+        kwiatki = new Kwiatek[5];
+        // Tworzenie obiektów "na sztywno"
+        kwiatki[0] = new Kwiatek("Róża", 3, 25.5, true);
+        kwiatki[1] = new Kwiatek("Tulipan", 5, 12.0, false);
+        kwiatki[2] = new Kwiatek("Storczyk", 7, 30.0, true);
+        kwiatki[3] = new Kwiatek("Kaktus", 14, 8.0, false);
+        kwiatki[4] = new Kwiatek("Bratki", 2, 10.0, true);
+    }
+
+    // Metoda wyświetlająca wszystkie obiekty
+    public void wyswietlWszystko() {
+        System.out.println("\n=== LISTA WSZYSTKICH KWIATKÓW W SZKLARNI ===");
+        for (int i = 0; i < kwiatki.length; i++) {
+            Kwiatek k = kwiatki[i];
+            System.out.println("Kwiatek " + (i + 1) + ":");
+            System.out.println("  Gatunek: " + k.getGatunek());
+            System.out.println("  Częstotliwość podlewania: " + k.getCzestotliwoscPodlewania() + " dni");
+            System.out.println("  Wysokość: " + k.getWysokosc() + " cm");
+            System.out.println("  Czy kwitnie: " + (k.isCzyKwitnie() ? "Tak" : "Nie"));
+            System.out.println("------------------------");
+        }
+    }
+
+    // Metoda analityczna: znajduje i wypisuje kwiaty wymagające częstej pielęgnacji
+    public void znajdzKwiatyWymagajaceCzestejPielegnacji() {
+        System.out.println("\n=== KWIATY WYMAGAJĄCE CZĘSTEJ PIELĘGNACJI (niski wzrost i podlewanie < 5 dni) ===");
+        boolean znaleziono = false;
+        for (int i = 0; i < kwiatki.length; i++) {
+            Kwiatek k = kwiatki[i];
+            if (k.czyWymagaCzestejPielegnacji()) {
+                System.out.println("- " + k.getGatunek() + " (Wysokość: " + k.getWysokosc() + " cm, Podlewanie co " + k.getCzestotliwoscPodlewania() + " dni)");
+                znaleziono = true;
+            }
+        }
+        if (!znaleziono) {
+            System.out.println("Brak kwiatów spełniających ten warunek.");
+        }
+    }
+}
